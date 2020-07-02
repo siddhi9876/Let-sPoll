@@ -9,13 +9,14 @@ class NavBar extends Component {
 
   onLogoutClick(e) {
     e.preventDefault();
-    this.props.clearCurrentProfile();
+
+    //Todo: Clear Remaining States
+    
     this.props.logoutUser();
   }
 
   render() {
-    const isAuthenticated = false;
-    const user = {};
+    const {user, isAuthenticated } = this.props.auth;
 
     const guestLinks = (
       <ul className="navbar-nav ml-auto">
