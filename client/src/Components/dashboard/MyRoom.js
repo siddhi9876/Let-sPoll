@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom'
+import { connect } from 'react-redux'
 import  create from './create.png';
 import AddParticipant from './AddParticipant';
+import { clearCurrentRoom, getCurrentRoom } from '../../actions/roomActions';
 
 class MyRoom extends Component {
 
@@ -12,6 +14,12 @@ class MyRoom extends Component {
       currentRoom: null
     }
     this.togglePopup = this.togglePopup.bind(this);
+    this.onOpenRoom = this.onOpenRoom.bind(this);
+  }
+
+  onOpenRoom(roomId) {
+    this.props.clearCurrentRoom();
+    this.props.getCurrentRoom(roomId);
   }
 
   togglePopup(roomId) {
@@ -44,7 +52,7 @@ class MyRoom extends Component {
                   <p>{room.description}</p>
                 </div>
                 <div className="col-4">
-                  <Link to="/open" className="btn btn-lg btn-info btn-block">
+                  <Link onClick={(roomId) => this.onOpenRoom(room.roomId)} to="/openRoom" className="btn btn-lg btn-info btn-block">
                     OpenRoom
                   </Link>
                   <button onClick={(roomId) => this.togglePopup(room.roomId)} className="btn btn-info btn-block mt-1">Add Participant</button>
@@ -69,4 +77,4 @@ class MyRoom extends Component {
 }
 
 
-export default MyRoom;
+export default connect(null, { clearCurrentRoom, getCurrentRoom })(MyRoom);

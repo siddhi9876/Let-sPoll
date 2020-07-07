@@ -19,6 +19,8 @@ import Login from './Components/auth/Login.js';
 import Dashboard from './Components/dashboard/Dashboard'
 import CreateProfile from './Components/create-profile/CreateProfile';
 import CreateRoom from './Components/create-room/CreateRoom';
+import CurrentRoom from './Components/room/CurrentRoom';
+
 
 
 
@@ -61,6 +63,9 @@ class App extends Component {
             </Switch>
             <Switch>
               <PrivateRoute exact path="/create-room" component={CreateRoom} />
+            </Switch>
+            <Switch>
+              <PrivateRoute exact path="/openRoom" component={CurrentRoom} />
             </Switch>
           </div>
           <Footer />

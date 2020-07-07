@@ -49,30 +49,6 @@ img {
   list-style-type: none;
 }
 
-.contact-list-item {
-  padding: 20px;
-  background: white;
-  display: flex;
-}
-
-.room-details {
-  padding-left: 20px;
-  border-left: 1px solid #eee;
-
-  flex: 1;
-  overflow: hidden;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-.room-details p {
-  margin: 0;
-  min-width: 0;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
 .popup {
   position: fixed;
   width: 100%;

@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 //Create Schema
 const RoomSchema = new Schema({
-
+  //TODO: Include owner name too
   owner: {
     type: Schema.Types.ObjectId,
     ref: 'profiles'
