@@ -29,8 +29,11 @@ module.exports = function validateCreateRoomInput (data) {
     errors.roomFemales = "Values must be an array"
   }
 
-  if(data.males.length != data.females.length) {
-    errors.males = "Keys and Values length must be equal";
+  console.log(`${data.males.length} ${data.females.length}`)
+
+  if(data.males.length !== data.females.length) {
+    console.log("here");
+    errors.roomMales = "Keys and Values length must be equal";
   }
 
   return {

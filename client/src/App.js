@@ -9,11 +9,18 @@ import store from './store';
 import setAuthToken from './utils/setAuthToken';
 import { setCurrentUser, logoutUser } from './actions/authActions'
 
+
+import PrivateRoute from './Components/common/PrivateRoute'
 import NavBar from './Components/layout/NavBar.js';
 import Landing from './Components/layout/Landing.js';
 import Footer from './Components/layout/Footer.js';
 import Register from './Components/auth/Register.js';
 import Login from './Components/auth/Login.js';
+import Dashboard from './Components/dashboard/Dashboard'
+import CreateProfile from './Components/create-profile/CreateProfile';
+import CreateRoom from './Components/create-room/CreateRoom';
+
+
 
 if(localStorage.jwtToken) {
   //Set auth token header auth
@@ -46,6 +53,15 @@ class App extends Component {
           <div className="container">
             <Route exact path="/register" component={Register} />
             <Route exact path="/login" component={Login} />
+            <Switch>
+              <PrivateRoute exact path="/dashboard" component={Dashboard} />
+            </Switch>
+            <Switch>
+              <PrivateRoute exact path="/create-profile" component={CreateProfile} />
+            </Switch>
+            <Switch>
+              <PrivateRoute exact path="/create-room" component={CreateRoom} />
+            </Switch>
           </div>
           <Footer />
         </div>

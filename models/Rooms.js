@@ -18,10 +18,16 @@ const RoomSchema = new Schema({
     type: String,
   },
 
-  participants: {
-    type: [Schema.Types.ObjectId],
-    ref: 'profiles'
-  },
+  participants: [{
+    id: {
+      type: Schema.Types.ObjectId,
+      ref: 'profiles'
+    },
+    email: {
+      type: String,
+      required: true
+    }
+  }],
 
   maleCount: {
     type: Number,

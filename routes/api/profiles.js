@@ -103,7 +103,7 @@ router.post('/createRoom', passport.authenticate('jwt', {session: false}), (req,
       //Check for Room name to be unique
       Room.findOne({name: req.body.room_name}).then(room => {
         if(room) {
-          errors.room = 'Room name already exists please choose another one';
+          errors.roomName = 'Room name already exists please choose another one';
           return res.status(400).json(errors);
         } else {
 
@@ -185,7 +185,7 @@ router.post('/addParticipant', passport.authenticate('jwt', {session: false}), (
 
         //Check if the user is owner of the Room
         if(profile.room_created.filter(troom => troom.roomId == req.body.room.id ).length === 0) {
-          errors.room = "Room doesnot belongs to you So you cant add Participant";
+          errors.addParticipant = "Room doesnot belongs to you So you cant add Participant";
           return res.status(400).json(errors);
         }
 
@@ -201,12 +201,13 @@ router.post('/addParticipant', passport.authenticate('jwt', {session: false}), (
               if(room) {
 
                 //If the participant is already added to the room
-                if(room.participants.filter(temp => temp == participantProfile.id).length)
+                if(room.participants.filter(temp => temp.id == participantProfile.id).length)
                 {
-                  return res.json({"msg": "Already Added"})
+                  errors.addParticipant = "Already Added"
+                  return res.status(400).json(errors);
                 }
                 
-                room.participants = room.participants.concat(participantProfile.id);
+                room.participants = room.participants.concat({id: participantProfile.id, email: req.body.participant});
                 Room.findOneAndUpdate(
                   { _id: req.body.room.id },
                   { $set: room},
@@ -226,14 +227,14 @@ router.post('/addParticipant', passport.authenticate('jwt', {session: false}), (
                       { $set: participantProfile},
                       { new: true}
                     ).then(newProfile => {
-                      return res.json({"msg": "Sucessfully added"});
+                      return res.json(newRoom);
                     })
                   }
                 });   
               }
             })
           } else {
-            errors.participantProfile = "Profile of this user doesnot Exist";
+            errors.addParticipant= "Profile of this user doesnot Exist";
             return res.status(400).json(errors);
           }
         })
