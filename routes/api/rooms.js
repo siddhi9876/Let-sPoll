@@ -25,11 +25,13 @@ router.get('/:roomId', passport.authenticate('jwt', {session: false}), (req, res
 
     if(profile) {
       
+      //Check if user has access to the room or not
       if((profile.room_created.filter(troom => troom.roomId == req.params.roomId ).length === 0) && (profile.room_partOf.filter(troom => troom.roomId == req.params.roomId ).length === 0)) {
         errors.room = "Room doesnot belongs to you neither you are a Participant";
         return res.status(400).json(errors);
       }
 
+      //Check if the room with given id exists or not
       Room.findOne({_id: req.params.roomId}).then(room => {
         if(room) {
           return res.json(room);
@@ -52,11 +54,13 @@ router.post('/submit/:roomId', passport.authenticate('jwt', {session: false}), (
 
     if(profile) {
       
+      //Check if user has right to poll or not
       if(profile.room_partOf.filter(troom => troom.roomId == req.params.roomId ).length === 0) {
         errors.room = "You are not a Participant";
         return res.status(400).json(errors);
       }
 
+      //Check if room with given id exists or not
       Room.findOne({_id: req.params.roomId}).then(room => {
         if(room) {
           const currResponse = req.body.currResponse;
@@ -113,7 +117,6 @@ router.post('/submit/:roomId', passport.authenticate('jwt', {session: false}), (
                 mPartner[currMale] = currFemale;
                 mFree[currMale] = true;
                 freeCount--;
-                console.log(`${room.males[currMale]} : ${room.females[currFemale]}`);
                 break;
               } else {
                 var tempMale = wPartner[currFemale];
@@ -151,11 +154,9 @@ router.post('/submit/:roomId', passport.authenticate('jwt', {session: false}), (
             {$set: room},
             {new : true}
           ).then(room => {
-            if(room)
-            {
+            if(room){
               return res.json(room);
-            }
-            else {
+            }else {
               errors.room = "Room Not found Contact to the Owner";
               return res.status(400).json(errors);
             }
@@ -163,8 +164,6 @@ router.post('/submit/:roomId', passport.authenticate('jwt', {session: false}), (
             errors.room = "Some error occured try again"
             return res.status(400).json(errors);
           })
-
-
         } else {
           errors.room = "Room not found";
           return res.status(400).json(errors);

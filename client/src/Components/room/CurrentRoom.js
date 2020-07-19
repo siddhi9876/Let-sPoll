@@ -10,23 +10,15 @@ import Result from './Result.js';
 
 
 class CurrentRoom extends Component {
-  constructor() {
-    super();
-    this.state = {
-      optionsLeft: null
-    }
-    this.onChange = this.onChange.bind(this);
-  }
-
-  onChange(e) {
-
-  }
+  
   render() {
     let contents;
     if(this.props.currentRoom.loading || isEmpty(this.props.currentRoom.room)) {
       contents = <Spinner />
     } else {
       let room = this.props.currentRoom.room;
+      let participants = room.participants.map((participant) => <a class="dropdown-item" href="#">{participant.email}</a>);
+
       contents = (
         <div>
         <div className="jumbotron">
@@ -35,6 +27,12 @@ class CurrentRoom extends Component {
           <p className="lead text-center text-info">{room.description}</p>
           <br />
           <h3>Owner <h4>{room.owner} </h4></h3>
+          <div class="btn-group float-right">
+            <button class="btn btn-info btn-lg dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Participants
+            </button>
+            <div class="dropdown-menu">{participants}</div>
+          </div>
         </div>
         <div className="row">
           <div className="col-sm">

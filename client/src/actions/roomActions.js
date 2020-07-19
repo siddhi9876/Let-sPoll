@@ -2,9 +2,27 @@ import axios from 'axios';
 import { GET_PROFILE, GET_ERRORS, GET_ROOM, CLEAR_CURRENT_ROOM, ROOM_LOADING } from './types';
 import { clearCurrentErrors } from './errorActions';
 
+//Submit your Response 
+export const submitResponse = (roomId, userResponse,history) => dispatch => {
+  axios.post(`/api/rooms/submit/${roomId}`, userResponse)
+    .then(res => 
+      {
+        alert("Your Response Submitted Successfully")
+        dispatch({
+        type: GET_ROOM,
+        payload: res.data
+      })
+    }
+  ).catch(err => {
+    alert(`Encountered some errors while Submitting.${err.response.data.room}. Try Again later`);
+    history.push('/dashboard');
+  })
+}
+
 // GET CURRENT ROOM 
 export const getCurrentRoom = (roomId) => dispatch =>  {
   dispatch(setRoomLoading());
+  localStorage.setItem('roomId', roomId);
   axios.get(`/api/rooms/${roomId}`)
       .then(res => 
         dispatch({
@@ -41,9 +59,10 @@ export const createRoom = (roomData, history) => dispatch => {
      })
 }
 
-export const addParticipant = (participant) => dispatch => {
+//add Participant to room
+export const addParticipant = (participantData) => dispatch => {
   dispatch(clearCurrentErrors());
-  axios.post('/api/profiles/addParticipant', participant)
+  axios.post('/api/profiles/addParticipant', participantData)
     .then(res => {
       dispatch({
         type: GET_ROOM,

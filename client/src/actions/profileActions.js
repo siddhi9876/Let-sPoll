@@ -2,7 +2,6 @@ import axios from 'axios';
 import { GET_ERRORS, GET_PROFILE, PROFILE_LOADING } from './types';
 
 //GET Profile
-
 export const getCurrentProfile = () => dispatch => {
   dispatch(setProfileLoading());
   axios.get('/api/profiles')
@@ -16,7 +15,8 @@ export const getCurrentProfile = () => dispatch => {
       dispatch({
         type: GET_PROFILE,
         payload: {}
-      }))
+      })
+  )
 }
 
 //Create Profile

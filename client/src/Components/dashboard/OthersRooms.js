@@ -1,20 +1,35 @@
 import React, { Component } from 'react';
-import  create from './join.png';
+import { Link } from 'react-router-dom'
+import { connect } from 'react-redux'
+import  join from './join.png';
+import { clearCurrentRoom, getCurrentRoom } from '../../actions/roomActions';
 
-class OthersRoom extends Component {
+class OthersRooms extends Component {
+
+  constructor() {
+    super();
+    this.onOpenRoom = this.onOpenRoom.bind(this);
+  }
+
+  onOpenRoom(roomId) {
+    this.props.clearCurrentRoom();
+    this.props.getCurrentRoom(roomId);
+  }
 
   render() {
     const {rooms} = this.props;
+    
     let contents;
     if(this.props.rooms.length === 0) {
       contents = <img 
-      src={create}
+      src={join}
       style={{width: '400px', margin: 'auto', display: 'block'}}
       alt="Loading ..."
     />
     } else {
+      
       contents = <div>
-        <h3 className="text-center"> Rooms You Invited for</h3>
+        <h3 className="text-center">Rooms you are invited for</h3>
         <ol className="room-list">
           {rooms.map((room) => (
             <li key={room.roomId} className="mt-4 p-4 border border-primary rounded">
@@ -24,7 +39,9 @@ class OthersRoom extends Component {
                   <p>{room.description}</p>
                 </div>
                 <div className="col-4">
-                  <button className="btn btn-info btn-block"> Open</button>
+                  <Link onClick={(roomId) => this.onOpenRoom(room.roomId)} to="/openRoom" className="btn btn-lg btn-info btn-block">
+                    OpenRoom
+                  </Link>
                 </div>
               </div>
             </li>
@@ -39,4 +56,4 @@ class OthersRoom extends Component {
 }
 
 
-export default OthersRoom;
+export default connect(null, { clearCurrentRoom, getCurrentRoom })(OthersRooms);

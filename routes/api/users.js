@@ -11,7 +11,7 @@ const passport = require('passport');
 //Load Validator
 const validateRegisterInput = require('../../validator/Register');
 const validateLoginInput = require('../../validator/Login');
-const { response } = require('express');
+
 
 //Load User model
 const User = require('../../models/Users');
